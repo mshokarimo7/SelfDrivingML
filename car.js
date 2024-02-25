@@ -13,9 +13,9 @@ class Car{
 
         this.controls = new Controls();
     }
-    
-    update(){
-        // -----------------Going forward and backwards--------------------
+
+    #move(){
+         // -----------------Going forward and backwards--------------------
         // adding acceleration to go forward
         if(this.controls.forward){
             this.speed += this.acceleration;
@@ -52,10 +52,16 @@ class Car{
                 this.angle -= 0.03 * flip;
             }
         }
-     
+
         this.x -= Math.sin(this.angle)*this.speed;
         this.y -= Math.cos(this.angle)*this.speed;
     }
+
+    
+    update(){
+       this.#move();
+    }
+    
     draw(ctx){
         ctx.save();
         ctx.translate(this.x, this.y);
