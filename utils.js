@@ -6,3 +6,7 @@ a give width(width is between x.left and x.right)
 function lerp(A, B, t){
     return A + (B-A)*t;
 }
+
+function getIntersection(A, B, C, D){
+     
+}
