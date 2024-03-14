@@ -59,6 +59,7 @@ class Sensor{
             if(this.readings[i]){
                 end = this.readings[i];
             }
+            
             ctx.beginPath();
             ctx.lineWidth = 2;
             ctx.strokeStyle = "yellow";
