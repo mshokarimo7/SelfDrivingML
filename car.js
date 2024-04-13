@@ -62,20 +62,29 @@ class Car{
     }
 
     
-    update(roadBorders, traffic){ 
+    update(roadBorders, traffic){
         if (!this.damaged){
             this.#move();
             this.polygon = this.#createPolygon();
+            // assessing the damage with the road borders and the traffic
             this.damaged = this.#assessDamage(roadBorders, traffic);
         }
         if(this.sensor){
+            // making sure that the sensor perceives the traffic as well
             this.sensor.update(roadBorders, traffic);
         }
     }
 
     #assessDamage(roadBorders, traffic){
+        // checking damage for road border intersection
         for(let i = 0; i < roadBorders.length; i++){
             if(polysIntersect(this.polygon, roadBorders[i])){
+                return true;
+            }
+        }
+        // checking damage for collisions with traffics
+        for(let i = 0; i < traffic.length; i++){
+            if(polysIntersect(this.polygon, traffic[i].polygon)){
                 return true;
             }
         }
@@ -96,12 +105,12 @@ class Car{
             x: this.x - Math.sin(this.angle + alpha) * rad,
             y: this.y - Math.cos(this.angle + alpha) * rad
         });
-        // bottom right point
+        // bottom left point
         points.push({
             x: this.x - Math.sin(Math.PI + this.angle - alpha) * rad,
             y: this.y - Math.cos(Math.PI + this.angle - alpha) * rad
         });
-        // bottom left point
+        // bottom right point
         points.push({
             x: this.x - Math.sin(Math.PI + this.angle + alpha) * rad,
             y: this.y - Math.cos(Math.PI + this.angle + alpha) * rad
@@ -110,15 +119,15 @@ class Car{
         return points;
     }
     
-    draw(ctx){
+    draw(ctx, color){
         if(this.damaged){
             ctx.fillStyle = 'gray';
         }
         else{
-            ctx.fillStyle = 'black';
+            ctx.fillStyle = color;
         }
         ctx.beginPath();
-        ctx.moveTo(this.polygon[0].x, this.polygon[0].y);7
+        ctx.moveTo(this.polygon[0].x, this.polygon[0].y);
         for(let i = 1; i < this.polygon.length; i++){
             ctx.lineTo(this.polygon[i].x, this.polygon[i].y);
         }
